@@ -5,6 +5,7 @@
 "use strict";
 const ViewerRequestInterface = require("./lib/ViewerRequestInterface");
 const OriginRequestInterface = require("./lib/OriginRequestInterface");
+const injectHeaders = require('./lib/injectHeaders');
 
 const prerendercloud = require("prerendercloud");
 
@@ -187,7 +188,7 @@ module.exports.originRequest = (event, context, callback) => {
 };
 
 module.exports.originResponse = (event, context, callback) => {
-  const cloudFrontResponse = event.Records[0].cf.response;
+  const cloudFrontResponse = injectHeaders(event.Records[0].cf.response);
   // console.log("originResponse", JSON.stringify(cloudFrontResponse));
 
   if (cloudFrontResponse.status === "404") {
