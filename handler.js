@@ -9,6 +9,11 @@ const injectHeaders = require('./lib/injectHeaders');
 
 const prerendercloud = require("prerendercloud");
 
+
+// 
+// Set URL here so if we need it we can reuse it
+const BASE_URL = 'demo.oldrivertrail.com';
+
 const origSet = prerendercloud.set;
 let cachedOptions = {};
 prerendercloud.set = function(optName, val) {
@@ -23,15 +28,15 @@ const resetPrerenderCloud = () => {
   // default prerender.cloud timeout is 10s
   //   - so if it takes longer than 11s, either prerender.cloud is down or backed up
   // max Lambda@Edge timeout is 30s
-  prerendercloud.set("retries", 1);
-  prerendercloud.set("timeout", 11000);
+  prerendercloud.set("retries", 2);
+  prerendercloud.set("timeout", 30000);
 
   // * CONFIGURATION *
 
   // 1. prerenderToken (API token, you'll be rate limited without it)
   //    Get it after signing up at https://www.prerender.cloud/
   //    note: Lambda@Edge doesn't support env vars, so hardcoding is your only option.
-  // prerendercloud.set("prerenderToken", "mySecretToken")
+  prerendercloud.set("prerenderToken", "dXMtd2VzdC0yOjk3M2UzOTdjLTE5MzctNGY2MS1iZDg4LTZiNDhjY2NhZGY3ZQ.DuVEEuNWH3Wg_mm6JIEi7o78Hf4hCpjfk6L-bRln2h4");
 
   // 2. protocol (optional, default is https)
   //    use this to force a certain protocol for requests from service.prerender.cloud to your origin
@@ -45,7 +50,7 @@ const resetPrerenderCloud = () => {
   //    set it, the only info we'd have access to during Lambda@Edge runtime is the host of the origin (S3)
   //    which would require additional configuration to make it publicly accessible (and it just makes things more confusing).
   //    example value: example.com or d1pxreml448ujs.cloudfront.net (don't include the protocol)
-  // prerendercloud.set("host", "");
+  prerendercloud.set("host", BASE_URL);
 
   // 4. removeTrailingSlash (recommended)
   //    Removes trailing slash from URLs to increase prerender.cloud server cache hit rate
@@ -67,7 +72,17 @@ const resetPrerenderCloud = () => {
   // 7. whitelistUserAgents
   //    specify your own list of bots
   //    useful when you only care about open graph previews (in which case, metaOnly also makes sense)
-  // prerendercloud.set('whitelistUserAgents', ['twitterbot', 'slackbot', 'facebookexternalhit']);
+  prerendercloud.set('whitelistUserAgents', [
+    'slack',
+    'twitterbot',
+    'slackbot',
+    'facebookexternalhit',
+    'LinkedInBot',
+    'Pinterest',
+    'Twitterbot/1.0',
+    'facebookexternalhit/1.1',
+    'Slackbot 1.0 (+https://api.slack.com/robots)'
+    ]);
 
   // 8. metaOnly
   //    only prerender the <title> and <meta> tags in the <head> section. The returned HTML payload will otherwise be unmodified.
@@ -76,7 +91,7 @@ const resetPrerenderCloud = () => {
   // eg1:
   //   prerendercloud.set('metaOnly', req => req.url === "/long-page-insuitable-for-full-prerender" ? true : false);
   // eg2:
-  //   prerendercloud.set('metaOnly', () => true);
+    prerendercloud.set('metaOnly', () => true);
 
   // 9. disableServerCache
   //    Disable the cache on prerender.cloud (default is enabled with 5 minute duration).
@@ -89,7 +104,7 @@ const resetPrerenderCloud = () => {
   //        - when you invalid CloudFront each page load will require a new prerender call
   //          (so if you regularly invalidate even if the content hasn't changed, you're slowing
   //           things down unnecessarily)
-  // prerendercloud.set('disableServerCache', true);
+  prerendercloud.set('disableServerCache', true);
 
   // 10. blacklistPaths
   //    the viewer-request function can't see what files exist on origin so you may need this
@@ -120,6 +135,7 @@ const resetPrerenderCloud = () => {
   // prerendercloud.set("disableAjaxPreload", true);
 
   // 13. see all configuration options here: https://github.com/sanfrancesco/prerendercloud-nodejs
+
 
   // for tests
   if (prerenderCloudOption) prerenderCloudOption(prerendercloud);
