@@ -1,3 +1,57 @@
+# IMPORTANT
+
+To deploy change functions names in `deploy.js` and :
+1. Change `serverless.yml` (line 4_
+    - demo: `service: Lambda-Edge-Prerendercloud-demo`
+    - prod: `service: Lambda-Edge-Prerendercloud`
+
+2. change `deploy.js` lambdaMappings (lines 7-20):
+    - demo:
+    ```javascript
+    const lambdaMappings = [
+      {
+        FunctionName: "Lambda-Edge-Prerendercloud-demo-dev-viewerRequest",
+        EventType: "viewer-request"
+      },
+      {
+        FunctionName: "Lambda-Edge-Prerendercloud-demo-dev-originRequest",
+        EventType: "origin-request"
+      },
+      {
+        FunctionName: "Lambda-Edge-Prerendercloud-demo-dev-originResponse",
+        EventType: "origin-response"
+      }
+    ];
+    ```
+    - prod:
+    ```javascript
+    const lambdaMappings = [
+      {
+        FunctionName: "Lambda-Edge-Prerendercloud-dev-viewerRequest",
+        EventType: "viewer-request"
+      },
+      {
+        FunctionName: "Lambda-Edge-Prerendercloud-dev-originRequest",
+        EventType: "origin-request"
+      },
+      {
+        FunctionName: "Lambda-Edge-Prerendercloud-dev-originResponse",
+        EventType: "origin-response"
+      }
+    ];
+    ```
+
+3. Change `handler.js` BASE_URL (line 15):
+    - demo: `const BASE_URL = 'demo.oldrivertrail.com'`;
+    - prod: `const BASE_URL = 'niskanencenter.org'`;
+
+4. Deploy!
+    - demo: `npm run deploy:demo`
+    - prod: `npm run deploy:prod`
+
+
+
+
 # Prerender CloudFront (via AWS Lambda@Edge)
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=SsMNQ3EaNZ0

@@ -7,5 +7,9 @@
   },
   "dependencies": {
     "prerendercloud": "1.40.1"
+  },
+  "scripts": {
+    "deploy:demo": "CLOUDFRONT_DISTRIBUTION_ID=E1SP51HV4WYFR4 make deploy",
+    "deploy:prod": "CLOUDFRONT_DISTRIBUTION_ID=E1GZ2IN3U3RG9O make deploy"
   }
 }
