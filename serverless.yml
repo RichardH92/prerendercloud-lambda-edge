@@ -1,7 +1,7 @@
 
 # see limits on Lambda@Edge http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html#limits-lambda-at-edge
 
-service: Lambda-Edge-Prerendercloud
+service: Lambda-Edge-Prerendercloud-demo
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details

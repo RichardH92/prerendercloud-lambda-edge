@@ -6,15 +6,15 @@ CLOUDFRONT_DISTRIBUTION_ID = process.env["CLOUDFRONT_DISTRIBUTION_ID"];
 
 const lambdaMappings = [
   {
-    FunctionName: "Lambda-Edge-Prerendercloud-dev-viewerRequest",
+    FunctionName: "Lambda-Edge-Prerendercloud-demo-dev-viewerRequest",
     EventType: "viewer-request"
   },
   {
-    FunctionName: "Lambda-Edge-Prerendercloud-dev-originRequest",
+    FunctionName: "Lambda-Edge-Prerendercloud-demo-dev-originRequest",
     EventType: "origin-request"
   },
   {
-    FunctionName: "Lambda-Edge-Prerendercloud-dev-originResponse",
+    FunctionName: "Lambda-Edge-Prerendercloud-demo-dev-originResponse",
     EventType: "origin-response"
   }
 ];
